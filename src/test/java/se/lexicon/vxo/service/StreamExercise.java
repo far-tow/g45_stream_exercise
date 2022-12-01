@@ -7,7 +7,9 @@ import se.lexicon.vxo.model.PersonDto;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -166,8 +168,12 @@ public class StreamExercise {
     public void task9() {
         int expectedSize = 892;
         LocalDate date = LocalDate.parse("1920-01-01");
-
         List<PersonDto> dtoList = null;
+
+        dtoList = people.stream()
+                .filter(person -> person.getDateOfBirth().isBefore(date))
+                .map(person -> new PersonDto(person.getPersonId(), person.getFirstName() + " " + person.getLastName()))
+                .collect(Collectors.toList());
 
         //todo: Write code here
 
@@ -183,8 +189,14 @@ public class StreamExercise {
     public void task10() {
         String expected = "WEDNESDAY 19 DECEMBER 2012";
         int personId = 5914;
-
         Optional<String> optional = null;
+
+        optional = people.stream()
+                .filter(person -> person.getPersonId() == 5914)
+                .map(person -> person.getDateOfBirth().format(DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy", Locale.ENGLISH)))
+                .map(String::toUpperCase)
+                .findFirst();
+
 
         //todo: Write code here
 
@@ -203,7 +215,11 @@ public class StreamExercise {
                 person -> Period.between(person.getDateOfBirth(), LocalDate.parse("2019-12-20")).getYears();
         double expected = 54.42;
         double averageAge = 0;
-
+        averageAge = people.stream()
+                .mapToInt(personToAge) //turning map to int
+                .peek(System.out::println) //look into the map we created & print
+                .average()//get the avarage
+                .orElse(0); //??
         //todo: Write code here
 
         assertTrue(averageAge > 0);
@@ -218,6 +234,11 @@ public class StreamExercise {
         String[] expected = {"Ada", "Ana", "Anna", "Ava", "Aya", "Bob", "Ebbe", "Efe", "Eje", "Elle", "Hannah", "Maram", "Natan", "Otto"};
 
         String[] result = null;
+        Predicate<String> pd = name -> name.equalsIgnoreCase(new StringBuilder(name).reverse().toString());
+
+        result = people.stream()
+                .map(Person::getFirstName)
+                .distinct().filter(pd).sorted().toArray(String[]::new);
 
         //todo: Write code here
 

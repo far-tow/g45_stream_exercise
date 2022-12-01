@@ -114,6 +114,9 @@ public class StreamExercise {
         int expectedLength = 3;
         Person[] result = null;
 
+        result = people.stream()
+                .filter(person -> person.getFirstName().equals("Erik"))
+                .toArray(Person[]::new);
 
         //todo: Write code here
 
@@ -127,8 +130,10 @@ public class StreamExercise {
     @Test
     public void task7() {
         Person expected = new Person(5436, "Tea", "Håkansson", LocalDate.parse("1968-01-25"), Gender.FEMALE);
-
         Optional<Person> optional = null;
+
+        optional = people.stream()
+                .filter(person -> person.getPersonId() == 5436).findFirst();
 
         //todo: Write code here
 
@@ -143,8 +148,10 @@ public class StreamExercise {
     @Test
     public void task8() {
         LocalDate expectedBirthDate = LocalDate.parse("1910-01-02");
-
         Optional<Person> optional = null;
+
+        optional = people.stream()
+                .min(Comparator.comparing(Person::getDateOfBirth));
 
         //todo: Write code here
 

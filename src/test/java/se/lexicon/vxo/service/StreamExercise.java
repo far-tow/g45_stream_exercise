@@ -223,7 +223,7 @@ public class StreamExercise {
 
         result = people.stream()
                 .map(Person::getFirstName)
-                .distinct().filter(pd).sorted().toArray(String[]::new);
+                .distinct().filter(pd).sorted().toArray(String[]::new); //distinct: tar bor dubletter.
 
 
         assertNotNull(result);
@@ -252,8 +252,8 @@ public class StreamExercise {
     @Test
     public void task14() {
         LocalDate[] _2020_dates = null;
-        LocalDate test = Stream.iterate(LocalDate.parse("2020-01-01"), n -> n.plusDays(1)).limit(366).toArray(->
-        LocalDate[_2020_dates];
+        _2020_dates = Stream.iterate(LocalDate.parse("2020-01-01"), n -> n.plusDays(1)).limit(366)
+                .toArray(len -> new LocalDate[len] );
 
         //todo: Write code here
 
